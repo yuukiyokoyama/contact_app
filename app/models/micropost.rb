@@ -2,6 +2,9 @@ class Micropost < ApplicationRecord
   belongs_to       :user
   has_one_attached :image
   default_scope -> { order(created_at: :desc) }
+  scope :search_by_keyword, -> (keyword) {
+    where("microposts.content LIKE :keyword", keyword: "%#{sanitize_sql_like(keyword)}%") if keyword.present?
+  }
   validates :user_id, presence: true
   validates :content, presence: true, length: { maximum: 140 }
   validates :image,   content_type: { in: %w[image/jpeg image/gif image/png],

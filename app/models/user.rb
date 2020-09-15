@@ -8,6 +8,9 @@ class User < ApplicationRecord
                                    dependent:   :destroy
   has_many :following, through: :active_relationships,  source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
+  scope :search_by_keyword, -> (keyword) {
+    where("users.name LIKE :keyword", keyword: "%#{sanitize_sql_like(keyword)}%") if keyword.present?
+  }
 
   attr_accessor :remember_token
   before_save { self.email = email.downcase }
@@ -75,5 +78,13 @@ class User < ApplicationRecord
     # 現在のユーザーがフォローしてたらtrueを返す
     def following?(other_user)
       following.include?(other_user)
+    end
+  
+    def self.search(search) #ここでのself.はUser.を意味する
+      if search
+        where(['name LIKE ?', "%#{search}%"]) #検索とnameの部分一致を表示。User.は省略
+      else
+        all #全て表示。User.は省略
+      end
     end
   end
