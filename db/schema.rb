@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_14_145305) do
+ActiveRecord::Schema.define(version: 2020_09_24_030944) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -33,22 +33,11 @@ ActiveRecord::Schema.define(version: 2020_09_14_145305) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "comments", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "micropost_id"
-    t.text "content", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["micropost_id"], name: "index_comments_on_micropost_id"
-    t.index ["user_id"], name: "index_comments_on_user_id"
-  end
-
   create_table "microposts", force: :cascade do |t|
     t.text "content"
     t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "in_reply_to"
     t.index ["user_id", "created_at"], name: "index_microposts_on_user_id_and_created_at"
     t.index ["user_id"], name: "index_microposts_on_user_id"
   end
@@ -71,11 +60,12 @@ ActiveRecord::Schema.define(version: 2020_09_14_145305) do
     t.string "password_digest"
     t.string "remember_digest"
     t.boolean "admin", default: false
+    t.string "activation_digest"
+    t.boolean "activated", default: false
+    t.datetime "activated_at"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "comments", "microposts"
-  add_foreign_key "comments", "users"
   add_foreign_key "microposts", "users"
 end
