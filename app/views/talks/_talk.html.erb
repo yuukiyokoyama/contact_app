@@ -1,0 +1,12 @@
+<li id="talk-<%= talk.id %>">
+<% massage = talk.latest_message %>
+<% membership = talk.memberships.find_by(user: current_user) %>
+<%= gravate_far(message.nil? ?talk.membershios.first.user:message.user, size:50)%>
+<%= link_to 'leave', membership_path(membership),class:"delete",method: :delete, date: { confirm: "You sure"}%>
+<%= link_to(talk) do%>
+<span class="title"><%= talk.totle(current_user,50) %></span>
+<span class="timestamp">
+posted <%= time_sgo_in_words(talk.updated_at)%>ago.
+</span>
+<%end%>
+</li>

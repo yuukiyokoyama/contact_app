@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:index, :edit, :update, :destroy,  :following, :followers]
+  before_action :logged_in_user, only: [:index, :edit, :update, :destroy,  :following, :followers, :likes]
   before_action :correct_user,   only: [:edit, :update]
   before_action :admin_user,     only: :destroy
 
@@ -9,7 +9,10 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    
     @microposts = @user.microposts.paginate(page: params[:page])
+    @room_id = message_room_id(current_user, @user)
+    @messages = Message.recent_in_room(@room_id)
   end
 
   def new
@@ -61,7 +64,24 @@ class UsersController < ApplicationController
     render 'show_follow'
   end
 
+  def likes
+    @title = "Likes"
+    @user  = User.find(params[:id])
+    @microposts = @user.likes.paginate(page: params[:page])
+    render 'show_like'
+end
+
   private
+
+  def message_room_id(first_user, second_user)
+    first_id = first_user.id.to_i
+    second_id = second_user.id.to_i
+    if first_id < second_id
+      "#{first_user.id}-#{second_user.id}"
+    else
+      "#{second_user.id}-#{first_user.id}"
+    end
+  end
 
     def user_params
       params.require(:user).permit(:name, :email, :password,

@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< Updated upstream
 ActiveRecord::Schema.define(version: 2020_09_24_030944) do
+=======
+ActiveRecord::Schema.define(version: 2020_09_30_120552) do
+>>>>>>> Stashed changes
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -33,6 +37,29 @@ ActiveRecord::Schema.define(version: 2020_09_24_030944) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+<<<<<<< Updated upstream
+=======
+  create_table "favorite_relationships", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "micropost_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["micropost_id"], name: "index_favorite_relationships_on_micropost_id"
+    t.index ["user_id", "micropost_id"], name: "index_favorite_relationships_on_user_id_and_micropost_id", unique: true
+    t.index ["user_id"], name: "index_favorite_relationships_on_user_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.text "content"
+    t.integer "from_id"
+    t.integer "to_id"
+    t.string "room_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["room_id", "created_at"], name: "index_messages_on_room_id_and_created_at"
+  end
+
+>>>>>>> Stashed changes
   create_table "microposts", force: :cascade do |t|
     t.text "content"
     t.integer "user_id"
