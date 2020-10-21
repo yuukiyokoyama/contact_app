@@ -19,3 +19,6 @@ class Micropost < ApplicationRecord
     image.variant(resize_to_limit: [500, 500])
   end
 end
+
+composed_of :content_object, class_name: "MicropostContent",
+mapping: %w(content micropost_content)

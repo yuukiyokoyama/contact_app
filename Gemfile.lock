@@ -37,6 +37,7 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
+    active_decorator (1.1.1)
     active_storage_validations (0.8.2)
       rails (>= 5.2.0)
     activejob (6.0.3)
@@ -291,6 +292,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_decorator (= 1.1.1)
   active_storage_validations (= 0.8.2)
   aws-sdk-s3 (= 1.46.0)
   bcrypt (= 3.1.13)
