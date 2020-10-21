@@ -1,0 +1,6 @@
+<% if @talks.any? %>
+ <ol class="talks">
+  <%= render @talks%>
+</ol>
+<%= paginate @talks, param_name: :talks_page %>
+<% end %>

@@ -24,7 +24,7 @@ class MicropostInterfaceTest < ActionDispatch::IntegrationTest
       post microposts_path, params: { micropost:
                                       { content: content, image: image } }
     end
-    assert FILL_IN.image.attached?
+    assert @user.microposts.first.picture?
     follow_redirect!
     assert_match content, response.body
     # 投稿を削除する
@@ -49,6 +49,6 @@ class MicropostInterfaceTest < ActionDispatch::IntegrationTest
     assert_match "0 microposts", response.body
     other_user.microposts.create!(content: "A micropost")
     get root_path
-    assert_match FILL_IN, response.body
+    assert_match "1 micropost", response.body
   end
 end

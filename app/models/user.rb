@@ -1,5 +1,16 @@
 class User < ApplicationRecord
+  class UserTest < ActiveSupport::TestCase
+  has_many :memberships, dependent: :destroy
+  has_meny :class_name: "Talk", through: :memberships
+  has_many :messages, dependent: :destroy
+  has_many :from_messages, class_name: "Message",
+          foreign_key: "from_id", dependent: :destroy
+  has_many :to_messages, class_name: "Message",
+          foreign_key: "to_id", dependent: :destroy
+  has_many :sent_messages, through: :from_messages, source: :from
+  has_many :received_messages, through: :to_messages, source: :to
   has_many :microposts, dependent: :destroy
+  # has_many :comments, dependent: :destroy
   has_many :active_relationships,  class_name:  "Relationship",
                                    foreign_key: "follower_id",
                                    dependent:   :destroy
@@ -21,6 +32,28 @@ class User < ApplicationRecord
                     uniqueness: true
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
+
+  # マイクロポストをライクする
+  def like(micropost)
+    likes << micropost
+  end
+
+  # マイクロポストをライク解除する
+  def unlike(micropost)
+    favorite_relationships.find_by(micropost_id: micropost.id).destroy
+  end
+
+  # 現在のユーザーがライクしていたらtrueを返す
+  def likes?(micropost)
+    likes.include?(micropost)
+  end
+
+
+
+  # Send message to other user
+  def send_message(other_user, room_id, content)
+    from_messages.create!(to_id: other_user.id, room_id: room_id, content: content)
+  end
 
   # 渡された文字列のハッシュ値を返す
   def User.digest(string)
@@ -89,5 +122,3 @@ class User < ApplicationRecord
     end
   end
 
-
-  composed_of :reply_name, mapping: [ %w(id user_id), %w(name user_name) ]

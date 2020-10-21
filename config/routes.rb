@@ -12,7 +12,21 @@ Rails.application.routes.draw do
       get :following, :followers
     end
   end
+  resources :users do
+    member do
+      get :following, :followers , :likes
+    end
+  end
+  resources :talk,  only: [:show, :create]do
+    member do
+      post :memberships, :messages
+    end
+  end
   resources :users
   resources :microposts,          only: [:create, :destroy]
   resources :relationships,       only: [:create, :destroy]
+  resources :favorite_relationships, only: [:create, :destroy]
+  mount ActionCable.server => '/cable'
+  resources :memberships, only: :destroy
+  resources :messages,    only: :destroy
 end

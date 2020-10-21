@@ -62,7 +62,6 @@ end
     @user.save
     assert_equal mixed_case_email.downcase, @user.reload.email
   end
-end
 
   test "password should be present (nonblank)" do
     @user.password = @user.password_confirmation = " " * 6

@@ -1,0 +1,24 @@
+<div class="row">
+ <aside class = "col=-md-4">
+  <section class = "user_info">
+  <%= render 'shsred/user_info'%>
+  </section>
+  <section clsaa="stats">
+   <%= render 'shared/stats'%>
+   </section>
+  </aside>
+  <div class= "col-md-8">
+  <ul class="nav nav-tabs">
+  <li class="active"><a href="#feed-tab" date-toggle="tab">Micropost Feed</a></li>
+  <li><a herf="#talds-tab" date-toggle="tab">Messages</a></li>
+  </ul>
+  <div class="tab-content">
+   <div class="tab-pane active" id="feed-tab">
+   <%= render 'shared/feed'%>
+   </div>
+   <div class="tab-pane" id = "talks-tab">
+   <%= render 'shares/talks'%> 
+   </div>
+    </div>
+  </div>
+</div>
