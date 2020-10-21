@@ -88,3 +88,6 @@ class User < ApplicationRecord
       end
     end
   end
+
+
+  composed_of :reply_name, mapping: [ %w(id user_id), %w(name user_name) ]
