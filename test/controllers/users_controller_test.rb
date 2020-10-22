@@ -36,7 +36,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     patch user_path(@other_user), params: {
                                     user: { password:              "password",
                                             password_confirmation: "password",
-                                            admin: FILL_IN } }
+                                            admin: true } }
     assert_not @other_user.FILL_IN.admin?
   end
 
@@ -79,5 +79,4 @@ end
 test "should redirect followers when not logged in" do
   get followers_user_path(@user)
   assert_redirected_to login_url
-end
 end

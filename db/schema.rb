@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_14_145305) do
+
+
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -33,15 +34,7 @@ ActiveRecord::Schema.define(version: 2020_09_14_145305) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "messages", force: :cascade do |t|
-    t.text "content"
-    t.integer "from_id"
-    t.integer "to_id"
-    t.string "room_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["room_id", "created_at"], name: "index_messages_on_room_id_and_created_at"
-  end
+
 
   create_table "microposts", force: :cascade do |t|
     t.text "content"
@@ -49,7 +42,7 @@ ActiveRecord::Schema.define(version: 2020_09_14_145305) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "in_reply_to"
-    t.integer "likes_count", default: 0, null: false
+
     t.index ["user_id", "created_at"], name: "index_microposts_on_user_id_and_created_at"
     t.index ["user_id"], name: "index_microposts_on_user_id"
   end
@@ -64,6 +57,12 @@ ActiveRecord::Schema.define(version: 2020_09_14_145305) do
     t.index ["follower_id"], name: "index_relationships_on_follower_id"
   end
 
+  create_table "talks", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["updated_at"], name: "index_talks_on_updated_at"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -72,10 +71,12 @@ ActiveRecord::Schema.define(version: 2020_09_14_145305) do
     t.string "password_digest"
     t.string "remember_digest"
     t.boolean "admin", default: false
-    t.string "unique_name"
+
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "memberships", "talks"
+  add_foreign_key "memberships", "users"
   add_foreign_key "microposts", "users"
 end

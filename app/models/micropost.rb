@@ -5,6 +5,8 @@ class Micropost < ApplicationRecord
   scope :search_by_keyword, -> (keyword) {
     where("microposts.content LIKE :keyword", keyword: "%#{sanitize_sql_like(keyword)}%") if keyword.present?
   }
+  has_many :favorite_relationships, dependent: :destroy
+  has_many :liked_by, through: :favorite_relationships, source: :user
   validates :user_id, presence: true
   validates :content, presence: true, length: { maximum: 140 }
   validates :image,   content_type: { in: %w[image/jpeg image/gif image/png],
@@ -17,3 +19,6 @@ class Micropost < ApplicationRecord
     image.variant(resize_to_limit: [500, 500])
   end
 end
+
+composed_of :content_object, class_name: "MicropostContent",
+mapping: %w(content micropost_content)
