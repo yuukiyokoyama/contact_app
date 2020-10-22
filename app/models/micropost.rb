@@ -1,5 +1,6 @@
 class Micropost < ApplicationRecord
   belongs_to       :user
+  belongs_to :in_reply_to, class_name: "User", foreign_key: "in_reply_to_id", optional: true
   has_one_attached :image
   default_scope -> { order(created_at: :desc) }
   scope :search_by_keyword, -> (keyword) {
@@ -12,6 +13,8 @@ class Micropost < ApplicationRecord
   validates :image,   content_type: { in: %w[image/jpeg image/gif image/png],
                                       message: "must be a valid image format" },
                       size:         { less_than: 5.megabytes,
+                        validates      :content, length: { maximum: 140 }
+validates      :content_object, presence: true
                                       message: "should be less than 5MB" }
 
   # 表示用のリサイズ済み画像を返す
@@ -22,3 +25,13 @@ end
 
 composed_of :content_object, class_name: "MicropostContent",
 mapping: %w(content micropost_content)
+
+before_validation :assign_in_reply_to
+
+private
+
+    def assign_in_reply_to
+      if content_object.reply?
+        self.in_reply_to = User.find_by(id: content_object.reply_name.user_id)
+      end
+    end
