@@ -33,11 +33,23 @@ ActiveRecord::Schema.define(version: 2020_09_14_145305) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  create_table "messages", force: :cascade do |t|
+    t.text "content"
+    t.integer "from_id"
+    t.integer "to_id"
+    t.string "room_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["room_id", "created_at"], name: "index_messages_on_room_id_and_created_at"
+  end
+
   create_table "microposts", force: :cascade do |t|
     t.text "content"
     t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "in_reply_to"
+    t.integer "likes_count", default: 0, null: false
     t.index ["user_id", "created_at"], name: "index_microposts_on_user_id_and_created_at"
     t.index ["user_id"], name: "index_microposts_on_user_id"
   end
@@ -60,6 +72,7 @@ ActiveRecord::Schema.define(version: 2020_09_14_145305) do
     t.string "password_digest"
     t.string "remember_digest"
     t.boolean "admin", default: false
+    t.string "unique_name"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
