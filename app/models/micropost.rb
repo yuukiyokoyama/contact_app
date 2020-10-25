@@ -16,6 +16,7 @@ class Micropost < ApplicationRecord
                         validates      :content, length: { maximum: 140 }
 validates      :content_object, presence: true
                                       message: "should be less than 5MB" }
+                                      validates_with ReplyValidator, if: -> { content_object.reply? }
 
   # 表示用のリサイズ済み画像を返す
   def display_image
@@ -34,4 +35,8 @@ private
       if content_object.reply?
         self.in_reply_to = User.find_by(id: content_object.reply_name.user_id)
       end
+    end
+
+    def self.including_replies(user_id)
+      where("user_id = :user_id OR in_reply_to_id = :user_id", user_id: user_id)
     end
