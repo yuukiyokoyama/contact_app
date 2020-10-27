@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   class UserTest < ActiveSupport::TestCase
+  has_many :likes, dependent: :destroy
   has_many :memberships, dependent: :destroy
   has_meny :class_name: "Talk", through: :memberships
   has_many :messages, dependent: :destroy
