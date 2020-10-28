@@ -29,4 +29,5 @@ Rails.application.routes.draw do
   mount ActionCable.server => '/cable'
   resources :memberships, only: :destroy
   resources :messages,    only: :destroy
+  resources :likes, only: [:create, :destroy]
 end

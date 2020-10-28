@@ -41,3 +41,13 @@ private
     def self.including_replies(user_id)
       where("user_id = :user_id OR in_reply_to_id = :user_id", user_id: user_id)
     end
+
+      # マイクロポストをいいねする
+  def iine(user)
+    likes.create(user_id: user.id)
+  end
+
+  # マイクロポストのいいねを解除する（ネーミングセンスに対するクレームは受け付けません）
+  def uniine(user)
+    likes.find_by(user_id: user.id).destroy
+  end
