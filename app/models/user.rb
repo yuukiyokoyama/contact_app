@@ -49,7 +49,13 @@ class User < ApplicationRecord
     likes.include?(micropost)
   end
 
-
+  def feed
+    following_ids = "SELECT followed_id FROM relationships
+                     WHERE follower_id = :user_id"
+    Micropost.including_replies(id)
+             .where("user_id IN (#{following_ids})
+                     OR user_id = :user_id", user_id: id)
+  end
 
   # Send message to other user
   def send_message(other_user, room_id, content)

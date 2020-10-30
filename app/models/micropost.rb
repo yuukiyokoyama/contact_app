@@ -51,3 +51,7 @@ private
   def uniine(user)
     likes.find_by(user_id: user.id).destroy
   end
+
+  def Micropost.including_replies(id)
+    where(in_reply_to: [id, 0]).or(Micropost.where(user_id: id))
+end
