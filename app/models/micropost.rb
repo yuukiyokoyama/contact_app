@@ -75,3 +75,22 @@ def set_in_reply_to
     self.in_reply_to = 0
   end
 end
+
+def is_i?(s)
+  Integer(s) != nil rescue false
+end
+
+def reply_to_user
+  return if self.in_reply_to == 0 # 1
+  unless user = User.find_by(id: self.in_reply_to) # 2
+    errors.add(:base, "User ID you specified doesn't exist.")
+  else
+    if user_id == self.in_reply_to # 3
+      errors.add(:base, "You can't reply to yourself.")
+    else
+      unless reply_to_user_name_correct?(user) # 4
+        errors.add(:base, "User ID doesn't match its name.")
+      end
+    end
+  end
+end
