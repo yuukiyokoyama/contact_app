@@ -94,3 +94,8 @@ def reply_to_user
     end
   end
 end
+
+def reply_to_user_name_correct?(user)
+  user_name = user.name.gsub(" ", "-")
+  content[@index+2, user_name.length] == user_name
+end
