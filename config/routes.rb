@@ -30,4 +30,5 @@ Rails.application.routes.draw do
   resources :memberships, only: :destroy
   resources :messages,    only: :destroy
   resources :likes, only: [:create, :destroy]
+  resources :password_resets,     only: [:new, :create, :edit, :update]
 end
