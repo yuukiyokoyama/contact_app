@@ -149,6 +149,11 @@ class User < ApplicationRecord
       update_columns(activated: FILL_IN, activated_at: FILL_IN)
     end
   
+  # パスワード再設定の期限が切れている場合はtrueを返す
+  def password_reset_expired?
+    reset_sent_at < 2.hours.ago
+  end
+
     # 有効化用のメールを送信する
     def send_activation_email
       UserMailer.account_activation(self).deliver_now
